@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link href="css/css.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+    <div class="box clear">
+        <div class="head" >
+            <h1>网站后台管理器</h1>
+            <div class="input">
+                <input type="text" id="user">
+                <input type="password" id="pass">
+            </div>
+            <button class="btn" id="btn">注册</button>
+
+            <div class="input a">
+                <input type="text" id="user1">
+                <input type="password" id="pass1">
+            </div>
+            <!--<div class="m"><input class="mi" type="checkbox" id="check"><p>记住密码</p></div><br>-->
+            <button class="btn1" id="btn1">登录</button>
+
+        </div>
+    </div>
+    </body>
+    <script>
+
+     btn1.onclick=function(){
+        ajax({
+        url:'http://localhost:8000/user/login',
+        type:'post',
+        data:{
+            user:user1.value,
+            pass:pass1.value
+        },
+        success:function(da){
+            console.log(da)
+        },
+        error:function(){
+            
+        }
+     })
+     }
+
+     btn.onclick=function(){
+        ajax({
+        url:'http://localhost:8000/user/login1',
+        type:'post',
+        data:{
+            user:user.value,
+            pass:pass.value
+        },
+        success:function(da){
+            console.log(da)
+            
+        },
+        error:function(){
+            
+        }
+     })
+     }
+     
+function ajax(req){
+    var ajax= new XMLHttpRequest();
+    if(req.type == 'get'){
+        ajax.open('get',req.url+'?'+strdata(req.data),true);
+        ajax.send()
+    }else{
+        ajax.open('post',req.url,true);
+        ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        ajax.send(strdata(req.data))
+    }
+        ajax.onreadystatechange = function(){
+            if(ajax.readyState == 4){
+                if(ajax.status>=200 && ajax.status<300 || ajax.status == 304){
+                    req.success(ajax.responseText)
+                }else{
+                    req.error(ajax.status)
+                }
+                
+            }
+        }
+
+    function strdata(da){
+          var arr = [];
+       for(var i in da){
+        arr.push(i+'='+da[i])
+      }
+       var strurl = arr.join('&');
+       return strurl
+    }
+}
+    </script>
+</html>
